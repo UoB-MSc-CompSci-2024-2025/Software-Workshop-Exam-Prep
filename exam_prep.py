@@ -20,6 +20,24 @@ def csv_to_dict(csv_file):
 
     return list_of_dictionaries
 
+def csv_dict_reader(csv_file):
+    """
+    Same as csv_to_dict(), but using in-built DictReader method
+    If the csv file has a header row, you can get rid of 'headers' and the fieldnames parameter in .DictReader(),
+    and it functions the same
+    Returns a list of dictionaries in this format:
+    [{'id': 'smith1', 'name': 'henry smith', 'age': '22', 'location': 'Birmingham'},
+    {'id': 'jones1', 'name': 'miriam jones', 'age': '30', 'location': 'York'}]
+    """
+    headers = ["id", "name", "age", "location"]
+    list_of_dictionaries = []
+    with open(csv_file, "r") as csv_file:
+        file = csv.DictReader(csv_file, delimiter=";", fieldnames=headers)
+        for row in file:
+            list_of_dictionaries.append(row)
+
+    return list_of_dictionaries
+
 
 def dict_to_csv(csv_file):
     """
