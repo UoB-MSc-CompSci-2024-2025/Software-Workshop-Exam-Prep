@@ -1,6 +1,3 @@
-import string
-
-
 def clean_up():
     pass
 
