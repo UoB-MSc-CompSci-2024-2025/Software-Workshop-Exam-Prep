@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 
 def csv_to_dict(csv_file):
     """
@@ -120,6 +121,46 @@ def search_nested_dictionary():
     nested_dictionary = nested_dictionaries.get("key1")
     print(nested_dictionary.get("nested_key1")) # Returns the nested value
     return
+
+def validate_datetime():
+    """
+    Gets the user to input a time in HH:MM:SS format (e.g. 09:30:00) then validates whether it was inputted correctly
+    If it's not in valid datetime format, it prompts the user again to input it correctly
+    Once it's validated, it returns itself in two objects: one as datetime and one as a string
+    The datetime objects can be used in calculate_time_difference() to find the difference between two times
+    The string object can be used to be written to a csv file
+    """
+    datetime_format = "%H:%M:%S"
+    while True:
+        user_time = str(input("Please input a time (HH:MM:SS): "))
+        try:
+            formatted_user_time_datetime = datetime.strptime(user_time, datetime_format)
+            formatted_user_time_string = formatted_user_time_datetime.strftime(datetime_format)
+            # If you only want to return a string, just 'return formatted_user_time_datetime.strftime(datetime_format)
+            return formatted_user_time_datetime, formatted_user_time_string
+        except ValueError:
+            print("Please enter a time in the datetime format")
+
+
+def calculate_time_difference(time_1, time_2):
+    """
+    Calculates the difference between two datetime objects (can't use strings)
+    Returns the difference in hours and minutes (both as type integer)
+    If we use this to track what time someone comes to work,
+    time_1 (when they came to work) = 09:30:00
+    time_2 (when they were supposed to come to work) = 08:00:00
+    It would return that they came to work an hour and 30 minutes late
+    If this was reversed, it would just return 0,0 and print that the user came to work early
+    """
+    if time_1 > time_2:
+        time_difference = time_1 - time_2
+        seconds = time_difference.seconds
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
+        return hours, minutes
+    else:
+        print("User came to work early")
+        return 0, 0  # returns a default value otherwise it causes issues when you return None
 
 
 def main():
